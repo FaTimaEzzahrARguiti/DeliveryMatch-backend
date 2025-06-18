@@ -1,5 +1,6 @@
 package com.example.deliverymatch.service;
 
+import com.example.deliverymatch.dto.AnnonceDto;
 import com.example.deliverymatch.model.Annonce;
 
 import com.example.deliverymatch.repository.AnnonceRepository;
@@ -31,7 +32,7 @@ public class AnnonceService {
                 .orElseThrow(() -> new RuntimeException("Événement non trouvé avec id : " + id));
     }
 
-    public Annonce updateAnnonce(Long id, Annonce updateAnnonce){
+    public Annonce updateAnnonce(Long id, AnnonceDto updateAnnonce){
         Annonce existingAnnonce= getAnnonceById(id);
 existingAnnonce.setDateDepart(updateAnnonce.getDateDepart());
         existingAnnonce.setDepart(updateAnnonce.getDepart());

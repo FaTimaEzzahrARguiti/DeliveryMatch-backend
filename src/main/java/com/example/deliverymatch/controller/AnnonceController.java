@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @RestController
@@ -31,10 +30,9 @@ public class AnnonceController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<AnnonceDto> updateAnnonce(@PathVariable Long id , @RequestBody AnnonceDto annonceDto){
-        Annonce annonce = annonceMapper.toEntity((annonceDto));
-        Annonce updateAnnonce = annonceService.updateAnnonce(id,annonce);
-        return ResponseEntity.ok(annonceMapper.toDto(updateAnnonce));
+    public ResponseEntity<Annonce> updateAnnonce(@PathVariable Long id, @RequestBody AnnonceDto annonceDto) {
+        Annonce updated = annonceService.updateAnnonce(id, annonceDto);
+        return ResponseEntity.ok(updated);
     }
 
 
@@ -50,6 +48,10 @@ public class AnnonceController {
         return ResponseEntity.ok(annonceMapper.toDto(annonce));
     }
 
-
+    @GetMapping
+    public ResponseEntity<List<Annonce>> getAll() {
+        List<Annonce> list = annonceService.gatAllAnnonces(); // ou map les entités en DTOs
+        return ResponseEntity.ok(list);
+    }
 
 }

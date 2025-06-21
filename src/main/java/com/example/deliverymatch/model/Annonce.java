@@ -1,9 +1,6 @@
 package com.example.deliverymatch.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,7 +11,8 @@ import java.time.LocalDate;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-
+@Getter
+@Setter
 public class Annonce {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,67 +25,22 @@ public class Annonce {
     private String typeColier;
     private Double poids;
 
-    public Long getId() {
-        return id;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "driver_id", referencedColumnName = "id", nullable = true)
+    private Driver driver; // Single point of reference for the driver relationship
+
+    // Getter and setter for driverId derived from driver
+    public Long getDriverId() {
+        return driver != null ? driver.getId() : null;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getDepart() {
-        return depart;
-    }
-
-    public void setDepart(String depart) {
-        this.depart = depart;
-    }
-
-    public String getHeure() {
-        return heure;
-    }
-
-    public void setHeure(String heure) {
-        this.heure = heure;
-    }
-
-    public LocalDate getDateDepart() {
-        return dateDepart;
-    }
-
-    public void setDateDepart(LocalDate dateDepart) {
-        this.dateDepart = dateDepart;
-    }
-
-    public String getArret() {
-        return arret;
-    }
-
-    public void setArret(String arret) {
-        this.arret = arret;
-    }
-
-    public String getCapacite() {
-        return capacite;
-    }
-
-    public void setCapacite(String capacite) {
-        this.capacite = capacite;
-    }
-
-    public String getTypeColier() {
-        return typeColier;
-    }
-
-    public void setTypeColier(String typeColier) {
-        this.typeColier = typeColier;
-    }
-
-    public Double getPoids() {
-        return poids;
-    }
-
-    public void setPoids(Double poids) {
-        this.poids = poids;
+    public void setDriverId(Long driverId) {
+        // This method is optional and can be used if you need to set driverId directly
+        if (driverId != null) {
+            this.driver = new Driver(); // Create a new Driver instance (adjust as needed)
+            this.driver.setId(driverId);
+        } else {
+            this.driver = null;
+        }
     }
 }

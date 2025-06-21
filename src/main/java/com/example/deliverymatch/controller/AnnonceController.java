@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
 @RestController
 @CrossOrigin
 @RequestMapping("/api/annonces")
@@ -22,9 +21,9 @@ public class AnnonceController {
     @Autowired
     private AnnonceMapper annonceMapper;
 
-
     @PostMapping
-    public ResponseEntity<Annonce> createAnnonce(@RequestBody Annonce annonce) {
+    public ResponseEntity<Annonce> createAnnonce(@RequestBody AnnonceDto annonceDto) {
+        Annonce annonce = annonceMapper.toEntity(annonceDto);
         Annonce saved = annonceService.createAnnonce(annonce);
         return ResponseEntity.ok(saved);
     }
@@ -35,23 +34,21 @@ public class AnnonceController {
         return ResponseEntity.ok(updated);
     }
 
-
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteAnnonce(@PathVariable Long id){
-        annonceService.DeleteAnnonce(id);
+    public ResponseEntity<Void> deleteAnnonce(@PathVariable Long id) {
+        annonceService.deleteAnnonce(id);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<AnnonceDto> getAnnonceById(@PathVariable Long id){
-        Annonce annonce=annonceService.getAnnonceById(id);
+    public ResponseEntity<AnnonceDto> getAnnonceById(@PathVariable Long id) {
+        Annonce annonce = annonceService.getAnnonceById(id);
         return ResponseEntity.ok(annonceMapper.toDto(annonce));
     }
 
     @GetMapping
     public ResponseEntity<List<Annonce>> getAll() {
-        List<Annonce> list = annonceService.gatAllAnnonces(); // ou map les entités en DTOs
+        List<Annonce> list = annonceService.getAllAnnonces();
         return ResponseEntity.ok(list);
     }
-
 }

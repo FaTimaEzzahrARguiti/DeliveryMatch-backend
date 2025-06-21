@@ -2,18 +2,19 @@ package com.example.deliverymatch.mapper;
 
 import com.example.deliverymatch.dto.AnnonceDto;
 import com.example.deliverymatch.model.Annonce;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 
-import org.mapstruct.Mapper;
-
 @Mapper(componentModel = "spring")
 public interface AnnonceMapper {
-    Annonce toEntity(AnnonceDto DTO);
-    AnnonceDto toDto(Annonce entity);
+    @Mapping(target = "driver", ignore = true) // Ignore direct driver mapping
+    Annonce toEntity(AnnonceDto dto);
+
+    @Mapping(target = "driver_id", expression = "java(annonce.getDriver() != null ? annonce.getDriver().getId() : null)")
+    AnnonceDto toDto(Annonce annonce);
+
     List<AnnonceDto> toDTOList(List<Annonce> annonces);
     List<Annonce> toEntityList(List<AnnonceDto> annonceDtos);
-
-
 }
